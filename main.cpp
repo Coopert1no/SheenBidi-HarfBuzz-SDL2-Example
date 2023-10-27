@@ -44,7 +44,7 @@ void draw_bidi_unshaped(const std::wstring& utf16_text, float x, float y);
 std::wstring utf8_to_utf16(const char* utf8, size_t utf8_size);
 
 int main() {
-	int font_size = 50;
+	int font_size = 70;
 	std::wstring utf16_text =
 		init(1280, 720, font_size, "C:/Windows/Fonts/arial.ttf", "utf8_text.txt");
 
@@ -72,8 +72,9 @@ int main() {
 		SDL_RenderClear(renderer);
 
 		// Render stuff
-		draw_bidi_shaped(text_layout, 0, 0);
-		draw_bidi_unshaped(utf16_text, 0, (float)font_size);
+		float offset = 50;
+		draw_bidi_shaped(text_layout, 0, offset);
+		draw_bidi_unshaped(utf16_text, 0, offset + 20 + (float)font_size);
 
 		if (!printed_info) {
 			printed_info = true;
@@ -211,7 +212,7 @@ void draw_bidi_shaped(const TextLayout& layout, float x, float y) {
 	float cursor_x = x;
 	float cursor_y = y;
 	for (const TextLayout::Glyph& glyph : layout.get_glyphs()) {
-		draw_glyph(glyph.codepoint, cursor_x + glyph.x_offset, cursor_y + glyph.y_offset);
+		draw_glyph(glyph.codepoint, cursor_x + glyph.x_offset, cursor_y - glyph.y_offset);
 		cursor_x += glyph.x_advance;
 		cursor_y += glyph.y_advance;
 	}
